@@ -5,17 +5,22 @@ export default function MouseFollower() {
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
 
-  // slightly snappier feel; tweak if you want
   // motion values for raw pointer position
-  const springX = useSpring(x, { stiffness: 1000, damping: 50, mass: 0.6 });
-  const springY = useSpring(y, { stiffness: 1000, damping: 50, mass: 0.6 });
+  // use smoother, realistic spring params so the follower doesn't overshoot
+  // faster but still smooth: higher stiffness, slightly higher damping, lower mass
+  const springConfig = { stiffness: 520, damping: 40, mass: 0.5 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
 
   useEffect(() => {
-    document.body.classList.add("cursor-none");
+    // hide native cursor and track pointer
+    const previousCursor = document.body.style.cursor;
+    document.body.style.cursor = "none";
     const move = (e) => { x.set(e.clientX); y.set(e.clientY); };
     window.addEventListener("pointermove", move, { passive: true });
     return () => {
-      document.body.classList.remove("cursor-none");
+      // restore cursor and cleanup
+      document.body.style.cursor = previousCursor || "";
       window.removeEventListener("pointermove", move);
     };
   }, [x, y]);
@@ -23,7 +28,8 @@ export default function MouseFollower() {
   return (
     <motion.div
       className="pointer-events-none fixed z-[999]"   // ⬅️ raise above nav & everything
-      style={{ translateX: springX, translateY: springY }}
+      // will-change hint helps the browser optimize transforms
+      style={{ translateX: springX, translateY: springY, willChange: "transform" }}
       aria-hidden
     >
       <div
@@ -37,12 +43,6 @@ export default function MouseFollower() {
     </motion.div>
   );
 }
-// MouseCursor: small custom cursor that follows pointer using framer-motion
-// Comments are verbose to explain the choices and how to tweak the motion
-// apply a spring so the cursor has a smooth, slightly snappy follow
-// tweak stiffness/damping to change responsiveness
-// hide native cursor for the page while this component is mounted
-// pointer move handler updates the motion values with client coords
-// cleanup: restore native cursor and remove listener
-// render a motion.div that is positioned by the spring values; pointer-events-none
-// keeps it from blocking interactions. aria-hidden because it's purely decorative.
+// custom cursor: small decorative follower using framer-motion springs
+// hides native cursor while mounted, restores on unmount
+// uses motion values + spring for smooth, snappy follow

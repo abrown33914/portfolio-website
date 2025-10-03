@@ -1,42 +1,40 @@
 import { useEffect, useRef } from "react";
 
-// StarCanvas: a lightweight animated starfield drawn to a <canvas>
-// Frequent comments below explain the variables and steps so it's easy to
-// understand when reading as a student or contributor.
+// lightweight starfield drawn to a <canvas>
+// concise developer comments; tunables below
 export default function StarCanvas() {
-  // reference to the <canvas> DOM node
+  // canvas DOM ref
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    // get the canvas and 2D context (alpha true so we can composite)
+    // get canvas and 2D context
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d", { alpha: true });
 
-    // ----- TUNABLE SETTINGS -----
-    // how many stars to render; reduce if you need better performance
-    const STARS = 240; // density (lower = faster)
-    // small motion per frame for each star
-    const DRIFT = 0.05; // px/frame
-    // base alpha for twinkle (dim base)
-    const TW_BASE = 0.16;
-    // twinkle amplitude multiplier
-    const TW_AMP = 0.60;
-    // cap overall brightness to avoid glare
-    const MAX_ALPHA = 0.74;
-    // maximum parallax offset in pixels when moving pointer
-    const PARALLAX = 12;
-    // device pixel ratio cap to avoid very large canvas sizes on high-DPR displays
-    const DPR_CAP = 2;
+  // tunables
+  const STARS = 180; // star count (lower = faster)
+  const DRIFT = 0.035; // base drift px/frame (slightly lower for less jitter)
+  const TW_BASE = 0.16; // twinkle base alpha
+  const TW_AMP = 0.6; // twinkle amplitude
+  const MAX_ALPHA = 0.74; // brightness cap
+  const PARALLAX = 22; // max parallax px (stronger mouse effect)
+  const DPR_CAP = 2; // cap devicePixelRatio
 
-    // ----- INTERNAL STATE -----
-    let stars = []; // array of star objects
-    let running = true; // flag used to stop the animation on unmount
-    const size = { w: window.innerWidth, h: window.innerHeight }; // viewport size
-    let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP); // pixel ratio used
-    const target = { x: 0, y: 0 }; // desired parallax target
-    const offset = { x: 0, y: 0 }; // eased parallax offset
+  // internal state
+  let stars = [];
+  let running = true; // stop flag for cleanup
+  const size = { w: window.innerWidth, h: window.innerHeight };
+  let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+  const target = { x: 0, y: 0 };
+  const offset = { x: 0, y: 0 }; // eased offset for smooth parallax
+  // velocity used by spring smoothing
+  const offsetVel = { x: 0, y: 0 };
+  // cached gradients to avoid recreating them each frame
+  let g1 = null, g2 = null;
+  // raw pointer position set from events; tick will compute target from this
+  const rawPointer = { x: size.w / 2, y: size.h / 2 };
 
-    // configure canvas size and scale based on dpr
+    // set canvas size & scale for DPR
     const setCanvas = () => {
       dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
       canvas.style.width = size.w + "px";
@@ -45,9 +43,17 @@ export default function StarCanvas() {
       canvas.height = Math.floor(size.h * dpr);
       // setTransform scales drawing operations to account for DPR
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      // update gradients whenever canvas size changes
+      const maxDim = Math.max(size.w, size.h);
+      g1 = ctx.createRadialGradient(size.w * 0.15, size.h * 0.15, 0, size.w * 0.15, size.h * 0.15, maxDim * 0.6);
+      g1.addColorStop(0, "rgba(210,111,162,0.14)");
+      g1.addColorStop(1, "transparent");
+      g2 = ctx.createRadialGradient(size.w * 0.85, size.h * 0.18, 0, size.w * 0.85, size.h * 0.18, maxDim * 0.5);
+      g2.addColorStop(0, "rgba(140,122,230,0.10)");
+      g2.addColorStop(1, "transparent");
     };
 
-    // seed the stars: create objects with position, radius, motion and phase
+  // seed stars with position, velocity, twinkle phase and depth
     const seed = () => {
       stars = Array.from({ length: STARS }, () => {
         const near = Math.random() < 0.15; // some stars are 'nearer' (brighter, larger)
@@ -64,12 +70,12 @@ export default function StarCanvas() {
       });
     };
 
-    // initialize canvas and stars
+  // init canvas and stars
     setCanvas();
     seed();
 
-    // ----- HANDLERS -----
-    // handle resize: rescale canvas and adjust star positions proportionally
+  // handlers
+  // resize: rescale canvas and adjust star positions
     let rAF = 0; // store animation frame id used by resize handler
     const onResize = () => {
       cancelAnimationFrame(rAF);
@@ -85,78 +91,80 @@ export default function StarCanvas() {
     };
     window.addEventListener("resize", onResize, { passive: true });
 
-    // pointer move: small parallax effect for fine pointers (mouse, trackpad)
+  // pointer move: record raw pointer; tick computes eased target
     const fine = matchMedia && matchMedia("(pointer:fine)").matches;
     const onMove = (e) => {
-      if (!fine) return; // ignore coarse pointers (touch)
-      const cx = size.w / 2, cy = size.h / 2; // center of viewport
-      // compute normalized target offset based on cursor position
-      target.x = ((e.clientX - cx) / cx) * PARALLAX;
-      target.y = ((e.clientY - cy) / cy) * PARALLAX;
+      if (!fine) return;
+      rawPointer.x = e.clientX;
+      rawPointer.y = e.clientY;
     };
     window.addEventListener("mousemove", onMove, { passive: true });
 
-    // ----- RENDER LOOP -----
+  // render loop with spring smoothing
     const tick = () => {
-      if (!running) return; // stop if unmounted
-      // ease offset toward target for smooth parallax
-      offset.x += (target.x - offset.x) * 0.07;
-      offset.y += (target.y - offset.y) * 0.07;
+      if (!running) return;
+      // compute target from the raw pointer each frame
+      const cx = size.w / 2, cy = size.h / 2;
+      target.x = ((rawPointer.x - cx) / cx) * PARALLAX;
+      target.y = ((rawPointer.y - cy) / cy) * PARALLAX;
+
+  // spring params
+  const k = 0.18; // stiffness
+  const damping = 0.82; // damping
+
+  // update spring velocity -> offset
+      offsetVel.x += (target.x - offset.x) * k;
+      offsetVel.y += (target.y - offset.y) * k;
+      offsetVel.x *= damping;
+      offsetVel.y *= damping;
+      offset.x += offsetVel.x;
+      offset.y += offsetVel.y;
 
       const w = size.w, h = size.h;
       ctx.clearRect(0, 0, w, h);
 
-      // draw subtle color auras to add depth (very faint)
-      const g1 = ctx.createRadialGradient(w*0.15,h*0.15,0,w*0.15,h*0.15,Math.max(w,h)*0.6);
-      g1.addColorStop(0,"rgba(210,111,162,0.14)"); g1.addColorStop(1,"transparent");
-      ctx.fillStyle = g1; ctx.fillRect(0,0,w,h);
-      const g2 = ctx.createRadialGradient(w*0.85,h*0.18,0,w*0.85,h*0.18,Math.max(w,h)*0.5);
-      g2.addColorStop(0,"rgba(140,122,230,0.10)"); g2.addColorStop(1,"transparent");
-      ctx.fillStyle = g2; ctx.fillRect(0,0,w,h);
+  // faint color auras (use cached gradients)
+  if (g1) { ctx.fillStyle = g1; ctx.fillRect(0,0,w,h); }
+  if (g2) { ctx.fillStyle = g2; ctx.fillRect(0,0,w,h); }
 
-      // draw each star: update phase, position, wrap and then draw
+  // draw stars
       ctx.fillStyle = "#fff";
       for (const s of stars) {
-        // advance twinkle phase and position
-        s.phase += 0.02 + s.tw * 0.01;
+  s.phase += 0.02 + s.tw * 0.01; // twinkle
         s.x += s.dx; s.y += s.dy;
 
-        // wrap stars to other side when they leave viewport
+        // wrap when out of view
         if (s.x < -2) s.x = w + 2;
         if (s.x > w + 2) s.x = -2;
         if (s.y < -2) s.y = h + 2;
         if (s.y > h + 2) s.y = -2;
 
-        // compute alpha with twinkle and clamp
+        // alpha with twinkle
         let a = TW_BASE + Math.abs(Math.sin(s.phase)) * TW_AMP * s.tw;
         if (a > MAX_ALPHA) a = MAX_ALPHA;
         ctx.globalAlpha = a;
 
-        // parallax offset scaled by depth
-        const ox = offset.x * s.depth;
-        const oy = offset.y * s.depth;
+  // parallax offset scaled by depth
+  const ox = offset.x * s.depth * 1.1;
+  const oy = offset.y * s.depth * 1.1;
 
-        // draw a small circle for the star
         ctx.beginPath();
         ctx.arc(s.x + ox, s.y + oy, s.r, 0, Math.PI * 2);
         ctx.fill();
       }
-      // reset alpha after drawing loop
       ctx.globalAlpha = 1;
 
-      // schedule next frame
       requestAnimationFrame(tick);
     };
     requestAnimationFrame(tick);
 
-    // cleanup on unmount: stop animation and remove listeners
+    // cleanup on unmount
     return () => {
       running = false;
       window.removeEventListener("resize", onResize);
       window.removeEventListener("mousemove", onMove);
     };
   }, []);
-
-  // canvas is fixed and behind all content; aria-hidden since it's decorative
+  // decorative canvas behind page content
   return <canvas ref={canvasRef} className="pointer-events-none fixed inset-0 z-0 select-none" aria-hidden />;
 }
