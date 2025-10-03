@@ -27,8 +27,6 @@ export default function StarCanvas() {
   let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
   const target = { x: 0, y: 0 };
   const offset = { x: 0, y: 0 }; // eased offset for smooth parallax
-  // velocity used by spring smoothing
-  const offsetVel = { x: 0, y: 0 };
   // cached gradients to avoid recreating them each frame
   let g1 = null, g2 = null;
   // raw pointer position set from events; tick will compute target from this
@@ -108,17 +106,9 @@ export default function StarCanvas() {
       target.x = ((rawPointer.x - cx) / cx) * PARALLAX;
       target.y = ((rawPointer.y - cy) / cy) * PARALLAX;
 
-  // spring params
-  const k = 0.18; // stiffness
-  const damping = 0.82; // damping
-
-  // update spring velocity -> offset
-      offsetVel.x += (target.x - offset.x) * k;
-      offsetVel.y += (target.y - offset.y) * k;
-      offsetVel.x *= damping;
-      offsetVel.y *= damping;
-      offset.x += offsetVel.x;
-      offset.y += offsetVel.y;
+        const alpha = 0.18;
+        offset.x += (target.x - offset.x) * alpha;
+        offset.y += (target.y - offset.y) * alpha;
 
       const w = size.w, h = size.h;
       ctx.clearRect(0, 0, w, h);
