@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base layout */
+:root { color-scheme: dark; }
+html, body, #root { height: 100%; }
+body { @apply bg-[#0B0B10] text-white overflow-x-hidden antialiased; }
+
+/* Hide native cursor when using custom cursor component */
+body.cursor-none,
+body.cursor-none * { cursor: none !important; }
+
+/* Reusable buttons */
+.btn-teal { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-teal-400 text-white/85 transition-colors; }
+.btn-teal:hover { @apply bg-teal-400 text-[#0B0B10]; }
+
+/* Hide scrollbars on carousels */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
