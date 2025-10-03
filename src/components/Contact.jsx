@@ -4,7 +4,12 @@ import { Mail, Linkedin, Phone } from "lucide-react";
 import { ChevronUp } from "lucide-react";
 import { theme } from "../theme";
 
+// Contact section: simple center-aligned contact info with CTAs
+// - decorative animated orbs sit behind the content
+// - email and phone are plain links (mailto/tel)
+// - LinkedIn CTA and a back-to-top button are included
 export default function Contact() {
+  // floating animation used for the decorative orbs in the background
   const float = {
     initial: { y: 0, opacity: 0.95 },
     animate: { y: [-10, 10, -10], opacity: [0.95, 1, 0.95] },
@@ -13,8 +18,9 @@ export default function Contact() {
 
   return (
     <Section id="contact" title="Contact">
+      {/* center container for the contact content */}
       <div className="relative grid place-items-center px-4 sm:px-0">
-        {/* ambient orbs (transparent behind) */}
+        {/* decorative orb in the top-left (faint, animated) */}
         <motion.div
           className="absolute -top-10 -left-14 w-28 h-28 sm:w-36 sm:h-36 rounded-full"
           style={{
@@ -25,6 +31,7 @@ export default function Contact() {
           animate={float.animate}
           transition={float.transition}
         />
+        {/* decorative orb in the bottom-right */}
         <motion.div
           className="absolute -bottom-12 -right-16 w-32 h-32 sm:w-40 sm:h-40 rounded-full"
           style={{
@@ -36,6 +43,7 @@ export default function Contact() {
           transition={{ ...float.transition, duration: 7 }}
         />
 
+        {/* main centered card area */}
         <motion.div
           className="w-full max-w-2xl mx-auto text-center"
           initial={{ y: 16, opacity: 0 }}
@@ -43,10 +51,12 @@ export default function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
+          {/* short intro */}
           <p className="text-neutral-100 text-xl sm:text-2xl">
             Feel free to reach out, I'm happy to connect!
           </p>
 
+          {/* email and phone links */}
           <div className="mt-6 space-y-4 text-[16px] sm:text-[18px] text-neutral-100">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
               <a
@@ -70,6 +80,7 @@ export default function Contact() {
             </div>
           </div>
 
+          {/* LinkedIn CTA */}
           <div className="mt-7">
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
@@ -88,6 +99,8 @@ export default function Contact() {
               <Linkedin size={18} /> Connect on LinkedIn
             </a>
           </div>
+
+          {/* Back to top button and label */}
           <div className="mt-10 flex justify-center">
             <div className="flex flex-col items-center gap-2">
               <button

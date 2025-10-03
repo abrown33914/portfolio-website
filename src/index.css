@@ -2,20 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Base layout */
+:root { color-scheme: dark; }
+/* ----------------------
+	Base layout
+	Basic page-level resets and dark background used across the site.
+	Keep these simple so tailwind utilities control most styling.
+	---------------------- */
 :root { color-scheme: dark; }
 html, body, #root { height: 100%; }
 body { @apply bg-[#0B0B10] text-white overflow-x-hidden antialiased; }
 
+
 /* Hide native cursor when using custom cursor component */
+/* Add the `cursor-none` class to body to hide OS cursor during development */
 body.cursor-none,
 body.cursor-none * { cursor: none !important; }
 
-/* Reusable buttons */
+/* Reusable button utility used across the site */
 .btn-teal { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-teal-400 text-white/85 transition-colors; }
 .btn-teal:hover { @apply bg-teal-400 text-[#0B0B10]; }
 
-/* Hide scrollbars on carousels */
+/* Hide scrollbars on carousels: used for Projects horizontal track */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 

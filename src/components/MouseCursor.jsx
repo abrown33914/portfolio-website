@@ -6,6 +6,7 @@ export default function MouseFollower() {
   const y = useMotionValue(-100);
 
   // slightly snappier feel; tweak if you want
+  // motion values for raw pointer position
   const springX = useSpring(x, { stiffness: 1000, damping: 50, mass: 0.6 });
   const springY = useSpring(y, { stiffness: 1000, damping: 50, mass: 0.6 });
 
@@ -36,3 +37,12 @@ export default function MouseFollower() {
     </motion.div>
   );
 }
+// MouseCursor: small custom cursor that follows pointer using framer-motion
+// Comments are verbose to explain the choices and how to tweak the motion
+// apply a spring so the cursor has a smooth, slightly snappy follow
+// tweak stiffness/damping to change responsiveness
+// hide native cursor for the page while this component is mounted
+// pointer move handler updates the motion values with client coords
+// cleanup: restore native cursor and remove listener
+// render a motion.div that is positioned by the spring values; pointer-events-none
+// keeps it from blocking interactions. aria-hidden because it's purely decorative.

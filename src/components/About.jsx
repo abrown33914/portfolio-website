@@ -3,20 +3,31 @@ import Section from "./Section";
 
 /** Simple, wide paragraph + small tech marquee */
 export default function About() {
-  const techs = ['React','TypeScript','Tailwind','Framer Motion','Node','Python','C++','Front End','ArduPilot','MongoDB','Data Structures','UI/UX'];
-
+  const techs = [
+    'React', 'Figma',
+    'JavaScript', 'HTML', 'CSS',
+    'Data Structures', 'React Native', 'Canva', 'Graphic Design',
+    'OOP', 'UI/UX' , 'Git', 'Python', 'C++'
+  ];
   return (
     <Section id="about" title="About">
-      <div className="mx-auto text-center px-4 max-w-[56rem] md:max-w-[64rem]">
-        <motion.p
+  <div className="mx-auto text-center px-4 max-w-[72rem] md:max-w-[80rem]">
+        <motion.div
           className="text-neutral-200 text-lg md:text-[20px] leading-relaxed tracking-[0.01em]"
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
         >
-          Hi, I’m Allison Brown! I’m a junior Software Engineering student at FGCU with a background in front-end and a growing
-          interest in cybersecurity and digital forensics. I help run our Computer Science & Software Engineering Club,
-          organizing technical workshops, career events, and hackathons. Off-screen, I’m into photography and playing pool. 
-          I’m open to internships and meaningful work where I can contribute and keep learning!
-        </motion.p>
+          <p>
+            Hi, I’m Allison! I’m a junior Software Engineering student at FGCU passionate about front-end development, UI/UX, and building projects that blend technical impact with great design. I’ve created cross platform apps, interactive simulations, and polished projects that showcase both functionality and user experience.
+          </p>
+
+          <p className="mt-4">
+            As Vice President of the Computer Science & Software Engineering Club, I help lead technical workshops, career events, and FGCU’s only student-run hackathon, working with companies like Microsoft, Hertz, and Arthrex.
+          </p>
+
+          <p className="mt-4">
+            Outside of coding, I’m into photography and playing pool. I’m excited to bring my creativity, technical skills, and leadership experience into work where I can contribute to impactful projects and keep learning!
+          </p>
+        </motion.div>
       </div>
 
       {/* Tech marquee (basic, smooth; remove if you want ultra minimal) */}

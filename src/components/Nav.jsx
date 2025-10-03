@@ -1,11 +1,19 @@
 import { useEffect, useState, useCallback } from "react";
 import { navItems, theme } from "../theme";
 
+// Nav component
+// - desktop: centered pill nav with utilities on the right
+// - mobile: fixed header with a hamburger that opens a compact overlay
 export default function Nav() {
+  // id of the currently visible section (used to highlight desktop nav)
   const [active, setActive] = useState("home");
+  // whether the mobile menu is open
   const [open, setOpen] = useState(false);
+  // keep the menu DOM mounted briefly after close so the close animation
+  // can finish before we unmount (avoids abrupt snapping)
+  const [mounted, setMounted] = useState(false);
 
-  // Observe sections to highlight active link (mainly useful on desktop)
+  // observe sections and update `active` as the user scrolls
   useEffect(() => {
     const ids = navItems.map((n) => n.id);
     const obs = new IntersectionObserver(
@@ -19,47 +27,64 @@ export default function Nav() {
     return () => obs.disconnect();
   }, []);
 
-  // Scroll helper
+  // helper: smooth-scroll to a section
   const scrollTo = useCallback((id) => {
     const el = document.getElementById(id);
     if (!el) return;
     el.scrollIntoView({ behavior: "smooth" });
   }, []);
 
-  // Close on ESC
+  // reusable hamburger svg so header and (previously) panel match exactly
+  const Hamburger = ({ size = 32 }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+      <path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z" />
+    </svg>
+  );
+
+  // close mobile menu on ESC
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Prevent background scroll when menu open
+  // lock body scroll while mobile menu is open
   useEffect(() => {
     if (open) document.body.classList.add("overflow-hidden");
     else document.body.classList.remove("overflow-hidden");
   }, [open]);
 
+  // keep menu mounted briefly so close animation can run
+  useEffect(() => {
+    if (open) {
+      setMounted(true);
+      return;
+    }
+    const timer = setTimeout(() => setMounted(false), 320);
+    return () => clearTimeout(timer);
+  }, [open]);
+
   return (
+    // fixed container at top of the page
     <div className="fixed top-4 inset-x-0 z-[140] px-3 sm:px-4">
-      {/* ===== Mobile header (hamburger + utils) ===== */}
+      {/* mobile header: hamburger on left, utilities on right */}
       <div className="md:hidden mx-auto max-w-screen-xl">
         <div className="flex items-center justify-between">
-          {/* Hamburger (glassy) */}
+          {/* header hamburger toggles the mobile panel */}
           <button
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className="inline-flex items-center justify-center w-20 h-20 text-white/90 hover:text-white transition-transform hover:scale-110 bg-transparent border-none shadow-none"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((s) => !s)}
+            className="inline-flex items-center justify-center w-20 h-20 text-white/90 hover:text-white transition-transform duration-150 hover:scale-110 bg-transparent border-none shadow-none"
+            style={{ zIndex: 160 }}
           >
-            {/* 3 bars */}
-            <svg width="32" height="32" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-              <path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z" />
-            </svg>
+            <Hamburger size={32} />
           </button>
 
-          {/* tiny brand or just spacer */}
+          {/* spacer */}
           <div className="px-2 text-sm text-white/70"></div>
 
-          {/* LinkedIn and Resume side by side */}
+          {/* utilities (LinkedIn, Resume) */}
           <div className="flex items-center gap-2">
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
@@ -96,12 +121,12 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* ===== Desktop: pill perfectly centered, utilities right ===== */}
+      {/* desktop header: centered pill nav */}
       <div className="hidden md:block mx-auto max-w-screen-xl">
         <div className="grid grid-cols-[1fr_auto_1fr] items-center relative h-12 sm:h-14">
           <div aria-hidden /> {/* left spacer */}
 
-          {/* PILL NAV (desktop only) */}
+          {/* centered pill nav */}
           <nav
             className="
               justify-self-center
@@ -139,7 +164,7 @@ export default function Nav() {
             })}
           </nav>
 
-          {/* utilities in the far-right corner */}
+          {/* right-side utilities */}
           <div className="flex items-center justify-self-end gap-2 pr-1">
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
@@ -178,33 +203,31 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* ===== Mobile menu overlay ===== */}
-      {open && (
+      {/* mobile overlay menu (mounted briefly to animate close) */}
+      {mounted && (
+        // overlay fades; pointer-events disabled while hidden
         <div
-          className="md:hidden fixed inset-0 z-[150] backdrop-blur-[1px]"
+          className={
+            `md:hidden fixed inset-0 z-[120] backdrop-blur-[1px] transition-opacity duration-200 ease-out ` +
+            (open ? "opacity-100" : "opacity-0 pointer-events-none")
+          }
           onClick={() => setOpen(false)}
           role="dialog"
           aria-modal="true"
         >
-          {/* Smaller rounded rectangle glassy menu panel, top left corner */}
+          {/* compact glassy panel in the top-left; animates translate+fade */}
           <div
-            className="absolute top-6 left-6 w-[70vw] max-w-[220px] rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-2 py-4 px-4"
-            style={{height: 'auto'}}
+            className={
+              `absolute top-4 left-4 w-[68vw] max-w-[220px] rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-2 pt-9 pb-3 px-3 transition-all duration-300 ease-out ` +
+              (open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-2 scale-95")
+            }
+            style={{ height: "auto" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header row */}
-            <div className="flex items-center justify-between">
-              <button
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-                className="absolute top-4 right-4 text-white text-3xl px-3 py-2 rounded-full transition-transform duration-150 hover:scale-110"
-              >
-                &times;
-              </button>
-            </div>
+            {/* menu items start below the fixed header hamburger */}
 
-            {/* Links */}
-            <nav className="mt-2 grid gap-1.5">
+            {/* menu links (stacked) */}
+            <nav className="mt-2 grid gap-1">
               {navItems.map((n) => (
                 <button
                   key={n.id}
@@ -230,8 +253,7 @@ export default function Nav() {
               ))}
             </nav>
 
-            {/* Footer actions */}
-            {/* ...removed footer actions for mobile menu... */}
+            {/* footer actions omitted */}
           </div>
         </div>
       )}
