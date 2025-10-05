@@ -84,8 +84,8 @@ export default function Nav() {
           {/* spacer */}
           <div className="px-2 text-sm text-white/70"></div>
 
-          {/* utilities (LinkedIn, Resume) */}
-          <div className="flex items-center gap-2">
+          {/* utilities (LinkedIn, Resume) - nudge down slightly on mobile so they sit lower than the hamburger */}
+          <div className="flex items-center gap-2" style={{ marginTop: 6 }}>
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
               target="_blank"
@@ -101,7 +101,7 @@ export default function Nav() {
               </svg>
             </a>
             <a
-              href="/AllisonBrown.pdf"
+              href={import.meta.env.BASE_URL + 'AllisonBrown.pdf'}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-3 py-2 rounded-full
@@ -181,7 +181,7 @@ export default function Nav() {
               </svg>
             </a>
             <a
-              href="/AllisonBrown.pdf"
+              href={import.meta.env.BASE_URL + 'AllisonBrown.pdf'}
               target="_blank"
               rel="noopener noreferrer"
               className="

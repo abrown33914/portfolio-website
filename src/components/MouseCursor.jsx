@@ -2,21 +2,29 @@ import { useEffect } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export default function MouseFollower() {
+  // do not render or attach pointer handlers on touch/coarse-pointer devices
+  if (typeof window !== "undefined" && window.matchMedia) {
+    const isCoarse = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    if (isCoarse) return null;
+  }
+
   const x = useMotionValue(-100);
   const y = useMotionValue(-100);
 
   // motion values for raw pointer position
-  // use smoother, realistic spring params so the follower doesn't overshoot
   // faster but still smooth: higher stiffness, slightly higher damping, lower mass
   const springConfig = { stiffness: 520, damping: 40, mass: 0.5 };
   const springX = useSpring(x, springConfig);
   const springY = useSpring(y, springConfig);
 
   useEffect(() => {
-    // hide native cursor and track pointer
+    // hide native cursor and track pointer (only on pointer-capable devices)
     const previousCursor = document.body.style.cursor;
     document.body.style.cursor = "none";
-    const move = (e) => { x.set(e.clientX); y.set(e.clientY); };
+    const move = (e) => {
+      x.set(e.clientX);
+      y.set(e.clientY);
+    };
     window.addEventListener("pointermove", move, { passive: true });
     return () => {
       // restore cursor and cleanup
@@ -27,7 +35,7 @@ export default function MouseFollower() {
 
   return (
     <motion.div
-      className="pointer-events-none fixed z-[999]"   // ⬅️ raise above nav & everything
+      className="pointer-events-none fixed z-[999]"
       // will-change hint helps the browser optimize transforms
       style={{ translateX: springX, translateY: springY, willChange: "transform" }}
       aria-hidden

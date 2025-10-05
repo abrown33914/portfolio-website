@@ -12,11 +12,23 @@
 html, body, #root { height: 100%; }
 body { @apply bg-[#0B0B10] text-white overflow-x-hidden antialiased; }
 
+/* Ensure the page cannot be scrolled sideways anywhere */
+html, body { overflow-x: hidden; }
+
 
 /* Hide native cursor when using custom cursor component */
 /* Add the `cursor-none` class to body to hide OS cursor during development */
 body.cursor-none,
 body.cursor-none * { cursor: none !important; }
+
+/* Mobile/touch caution: heavy backdrop-filters can cause repaint flashing on some devices.
+	 We reduce or disable them for coarse-pointer devices to avoid visual glitches. */
+@media (pointer: coarse) {
+	/* weaken backdrop blur globally for touch devices */
+	.backdrop-blur { backdrop-filter: none !important; }
+	/* reduce translucent glass intensity so repaints are cheaper */
+	.bg-black\/35 { background-color: rgba(0,0,0,0.6) !important; }
+}
 
 /* Reusable button utility used across the site */
 .btn-teal { @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl border border-teal-400 text-white/85 transition-colors; }

@@ -21,8 +21,31 @@ export default function Projects() {
   const nudge = (dir) => {
     const el = trackRef.current;
     if (!el) return;
-    // move roughly one viewport's worth (80%) left or right
-    el.scrollBy({ left: el.clientWidth * 0.8 * dir, behavior: "smooth" });
+    // smart snap: find project cards and scroll so a full card is in view
+    const cards = Array.from(el.querySelectorAll("article"));
+    if (!cards.length) {
+      // fallback to previous behavior
+      el.scrollBy({ left: el.clientWidth * 0.8 * dir, behavior: "smooth" });
+      return;
+    }
+
+    const spacer = startSpacerRef.current;
+    const pad = spacer ? calcDesiredLeftPad(spacer.offsetWidth) : 12;
+    const viewLeft = el.scrollLeft;
+
+    // find the first card whose left is at or after the current viewport left + pad
+    let current = cards.findIndex((c) => c.offsetLeft >= viewLeft + pad - 1);
+    if (current === -1) {
+      // if not found, pick the first partially visible card
+      current = cards.findIndex((c) => c.offsetLeft + c.clientWidth > viewLeft + pad) || 0;
+    }
+
+    const targetIndex = dir > 0 ? Math.min(cards.length - 1, current + 1) : Math.max(0, current - 1);
+    const target = cards[targetIndex];
+    if (!target) return;
+
+    const targetScroll = Math.max(0, target.offsetLeft - pad);
+    el.scrollTo({ left: targetScroll, behavior: "smooth" });
   };
 
   // Calculate a desired left padding based on viewport width so the first card

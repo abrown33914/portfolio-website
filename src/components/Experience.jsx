@@ -81,7 +81,7 @@ export default function Experience() {
               transition={{ duration: 0.36 }}
             >
               <img
-                src="/shellhacks.jpg"
+                src={import.meta.env.BASE_URL + 'shellhacks.jpg'}
                 alt="ShellHacks project showcase"
                 className="w-full h-full object-cover object-top"
                 loading="lazy"
@@ -96,7 +96,7 @@ export default function Experience() {
               transition={{ duration: 0.36, delay: 0.04 }}
             >
               <img
-                src="/presenting.jpg"
+                src={import.meta.env.BASE_URL + 'presenting.jpg'}
                 alt="Me Presenting at CSSEC"
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
@@ -112,7 +112,7 @@ export default function Experience() {
               transition={{ duration: 0.36, delay: 0.06 }}
             >
               <img
-                src="/cssec.jpg"
+                src={import.meta.env.BASE_URL + 'cssec.jpg'}
                 alt="CSSEC detail"
                 className="w-full h-full object-cover object-center"
                 loading="lazy"
@@ -131,7 +131,7 @@ export default function Experience() {
                 transition={{ duration: 0.4 }}
               >
                 <img
-                  src="/cssec.jpg"
+                  src={import.meta.env.BASE_URL + 'cssec.jpg'}
                   alt="CSSEC Tabling Event"
                   className="w-full aspect-video object-cover object-top"
                   loading="lazy"
@@ -146,7 +146,7 @@ export default function Experience() {
                 transition={{ duration: 0.4, delay: 0.05 }}
               >
                 <img
-                  src="/presenting.jpg"
+                  src={import.meta.env.BASE_URL + 'presenting.jpg'}
                   alt="Me Presenting at CSSEC"
                   className="w-full object-cover aspect-[3/4]"
                   loading="lazy"
@@ -165,7 +165,7 @@ export default function Experience() {
               {/* use a wider aspect + max-height so this image doesn't dominate */}
               {/* nearer-square aspect; allow it to be a bit taller on lg */}
               <img
-                src="/shellhacks.jpg"
+                src={import.meta.env.BASE_URL + 'shellhacks.jpg'}
                 alt="ShellHacks 2024 (FIU)"
                 className="w-full object-cover aspect-[4/5] lg:max-h-[380px]"
                 loading="lazy"

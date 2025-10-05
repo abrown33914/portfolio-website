@@ -8,7 +8,7 @@ export const projects = [
     tagline: "Python • MediaPipe • Google ADK",
     desc: "AI for posture and distraction detection with real-time alerts and wellness tracking.",
     repo: "https://github.com/abrown33914/iMPOSTURE",
-    cover: "/Projects/iMPOSTURE/ImpostureThumbnail.jpg",
+  cover: import.meta.env.BASE_URL + "Projects/iMPOSTURE/ImpostureThumbnail.jpg",
   },
   {
     // mobile app with mapping and AI features
@@ -16,7 +16,7 @@ export const projects = [
     tagline: "React Native • Google Maps • Gemini",
     desc: "Off-grid survival assistant with photo scanning, resource maps, and reporting.",
     repo: "https://github.com/abrown33914/neo-eden",
-    cover: "/Projects/NeoEden/1.jpg",
+  cover: import.meta.env.BASE_URL + "Projects/NeoEden/1.jpg",
   },
   {
     // drone simulation and defense experiments
@@ -24,7 +24,7 @@ export const projects = [
     tagline: "Gazebo • ArduPilot SITL • Python",
     desc: "RF jamming simulations with scripted defenses and fail-safe behaviors.",
     repo: "https://github.com/abrown33914/drone-project-simulations",
-    cover: "/Projects/Drones/DroneThumbnail.jpg",
+  cover: import.meta.env.BASE_URL + "Projects/Drones/DroneThumbnail.jpg",
   },
   {
     // server / DNS configuration project
@@ -32,6 +32,6 @@ export const projects = [
     tagline: "Bash • BIND • Apache",
     desc: "Deployed a secure web server with custom domain and DNS zones.",
     repo: "https://github.com/abrown33914/linux-dns-webserver-config",
-    cover: "/Projects/DNS/DNSThumbnail.jpg",
+  cover: import.meta.env.BASE_URL + "Projects/DNS/DNSThumbnail.jpg",
   },
 ];
