@@ -104,7 +104,11 @@ export default function Contact() {
           <div className="mt-10 flex justify-center">
             <div className="flex flex-col items-center gap-2">
               <button
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                onClick={() => {
+                  // prefer scrolling the documentElement for cross-browser consistency
+                  const scroller = document.scrollingElement || document.documentElement || document.body;
+                  scroller.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 aria-label="Back to Top"
                 className="flex items-center justify-center w-11 h-11 md:w-12 md:h-12 text-white/90 transition-transform hover:scale-110 outline-none focus:outline-none bg-transparent border-none shadow-none"
                 style={{ background: 'none', boxShadow: 'none', border: 'none' }}

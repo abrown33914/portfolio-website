@@ -190,7 +190,8 @@ export default function Experience() {
                   <h4 className="text-white font-semibold text-base sm:text-lg mb-0.5">
                     {it.role}
                   </h4>
-                  <span className="text-neutral-400 text-sm sm:text-base mb-0.5 block truncate">{it.company}</span>
+                  {/* allow long organization names to wrap instead of truncating */}
+                  <span className="text-neutral-400 text-sm sm:text-base mb-0.5 block whitespace-normal break-words">{it.company}</span>
                 </div>
 
                 <div className="text-right">

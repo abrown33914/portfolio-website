@@ -85,7 +85,7 @@ export default function Nav() {
           <div className="px-2 text-sm text-white/70"></div>
 
           {/* utilities (LinkedIn, Resume) - nudge down slightly on mobile so they sit lower than the hamburger */}
-          <div className="flex items-center gap-2" style={{ marginTop: 6 }}>
+          <div className="flex items-center gap-2 mt-3">
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
               target="_blank"
