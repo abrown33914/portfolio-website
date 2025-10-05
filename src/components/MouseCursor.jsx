@@ -18,9 +18,9 @@ export default function MouseFollower() {
   const springY = useSpring(y, springConfig);
 
   useEffect(() => {
-    // hide native cursor and track pointer (only on pointer-capable devices)
-    const previousCursor = document.body.style.cursor;
-    document.body.style.cursor = "none";
+    // hide native cursor by toggling the `cursor-none` body class
+    // (index.css already sets body.cursor-none * { cursor: none !important })
+    document.body.classList.add("cursor-none");
     const move = (e) => {
       x.set(e.clientX);
       y.set(e.clientY);
@@ -28,7 +28,7 @@ export default function MouseFollower() {
     window.addEventListener("pointermove", move, { passive: true });
     return () => {
       // restore cursor and cleanup
-      document.body.style.cursor = previousCursor || "";
+      document.body.classList.remove("cursor-none");
       window.removeEventListener("pointermove", move);
     };
   }, [x, y]);
