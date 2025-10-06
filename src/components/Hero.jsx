@@ -131,7 +131,7 @@ export default function Hero() {
               w-[11.5rem] h-[11.5rem] xs:w-[13rem] xs:h-[13rem] sm:w-[20rem] sm:h-[20rem]
             "
           >
-              <img src={import.meta.env.BASE_URL + 'me.jpg'} alt="Allison" className="w-full h-full object-cover" />
+        <img src={import.meta.env.BASE_URL + 'me.JPG'} alt="Allison" className="w-full h-full object-cover" />
           </div>
         </motion.div>
       </div>
