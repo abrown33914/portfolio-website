@@ -103,18 +103,20 @@ export default function Contact() {
           {/* Back to top button and label */}
           <div className="mt-10 flex justify-center">
             <div className="flex flex-col items-center gap-2">
-              <button
-                onClick={() => {
-                  // prefer scrolling the documentElement for cross-browser consistency
-                  const scroller = document.scrollingElement || document.documentElement || document.body;
-                  scroller.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
+              <a
+                href="#home"
                 aria-label="Back to Top"
-                className="flex items-center justify-center w-11 h-11 md:w-12 md:h-12 text-white/90 transition-transform hover:scale-110 outline-none focus:outline-none bg-transparent border-none shadow-none"
-                style={{ background: 'none', boxShadow: 'none', border: 'none' }}
+                className="relative inline-flex items-center justify-center px-3 md:px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors transition-transform hover:scale-110 text-white/90"
+                style={{ background: 'none', boxShadow: 'none', border: 'none', color: 'rgba(255,255,255,0.90)' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById('home');
+                  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  else window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
               >
-                <ChevronUp size={34} strokeWidth={3} />
-              </button>
+                <ChevronUp size={24} strokeWidth={3} />
+              </a>
               <span className="text-xs sm:text-sm text-white/80 mt-1">Back to Top</span>
             </div>
           </div>

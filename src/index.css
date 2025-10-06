@@ -10,6 +10,14 @@
 	---------------------- */
 :root { color-scheme: dark; }
 /* Use dynamic viewport height so mobile browsers that hide the chrome don't cut off background */
+/* Enable smooth scrolling for in-page anchors; respect reduced-motion setting */
+html {
+	scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+}
+
 html, body, #root { height: 100%; min-height: 100dvh; }
 body { @apply bg-[#0B0B10] text-white overflow-x-hidden antialiased; }
 
@@ -35,6 +43,82 @@ body.cursor-none * { cursor: none !important; }
 canvas.pointer-events-none {
 	will-change: transform, opacity; /* hint to the browser */
 	image-rendering: auto;
+}
+
+/* projects track mask: faded edges for large screens only */
+@media (min-width: 768px) {
+	.projects-mask {
+		/* subtler fade: narrower fade stops */
+		-webkit-mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+		mask-image: linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+	}
+}
+
+/* Mobile-specific arrow positioning: keep arrows slightly inset from the screen edge */
+@media (max-width: 767px) {
+	.projects-arrow-left { left: 36px !important; }
+	.projects-arrow-right { right: 36px !important; }
+	/* ensure the track uses the arrow offset so cards sit between arrows */
+	.projects-mask { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Projects track tuning */
+.projects-track {
+	--card-gap: 20px;
+	--arrowOffset: 40px; /* default, overridden by inline style host */
+}
+
+/* Ensure articles inside the track don't shrink and don't show partial peeks */
+.projects-track article { flex-shrink: 0; }
+
+/* Mobile arrows area adjustments */
+.projects-track + .md\:hidden {
+	margin-top: 6px;
+}
+
+/* Larger, spaced mobile arrows and lowered position */
+.projects-mobile-arrows { margin-top: 2rem; }
+.projects-mobile-arrows button { transform: none; }
+
+/* Defensive min-width when JS hasn't computed cardWidth yet */
+.projects-track article { min-width: 280px; }
+
+/* On wide screens, allow the computed cardWidth to take over; reduce min-width */
+@media (min-width: 1024px) {
+	.projects-track article { min-width: 0; }
+	.projects-track { --card-gap: 24px; }
+}
+
+/* ensure mobile arrow buttons stay visually stable on touch */
+.projects-mobile-arrows button {
+	background: none;
+	border: none;
+}
+.projects-mobile-arrows button:active,
+.projects-mobile-arrows button:focus {
+	transform: none !important;
+}
+
+/* Disable hover-driven transform/scale animations on touch devices (mobile) */
+@media (hover: none), (pointer: coarse) {
+	/* neutralize scale hover utilities */
+	.hover\:scale-105:hover,
+	.hover\:scale-110:hover,
+	.hover\:scale-115:hover,
+	.hover\:scale-105:active,
+	.hover\:scale-110:active {
+		transform: none !important;
+	}
+
+	/* turn off transition-based transform animations on touch devices */
+	.transition-transform { transition: none !important; }
+
+	/* avoid hover background color changes sticking on touch */
+	.hover\:bg-white\/10:hover,
+	.hover\:bg-white\/6:hover,
+	.hover\:bg-transparent:hover {
+		background-color: transparent !important;
+	}
 }
 
 /* Reusable button utility used across the site */

@@ -13,6 +13,7 @@ export default function ProjectCard({
   desc,
   repo,
   cover, // image URL
+  cardWidth = null,
 }) {
 
   return (
@@ -21,12 +22,17 @@ export default function ProjectCard({
   // - min-width values control how the carousel peeks on small screens
     <article
       className={`
-        group snap-start
-        min-w-[88%] sm:min-w-[64%] md:min-w-[50%] lg:min-w-[44%] xl:min-w-[40%] 2xl:min-w-[38%]
+        group snap-center
         p-5 rounded-2xl border bg-white/10 backdrop-blur border-white/15
         focus-within:ring-2 focus-within:ring-[#2EC4B6]/60
       `}
+      style={
+        cardWidth
+          ? { minWidth: `${cardWidth}px`, flex: `0 0 ${cardWidth}px` }
+          : undefined
+      }
     >
+    {/* Ensure when cardWidth isn't computed we still reserve reasonable min-widths */}
   {/* Cover: visual only */}
       <div className="rounded-xl overflow-hidden aspect-[16/9] bg-white/5 border border-white/10 outline-none">
         {cover ? (
