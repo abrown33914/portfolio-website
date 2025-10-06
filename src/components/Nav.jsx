@@ -85,7 +85,7 @@ export default function Nav() {
           <div className="px-2 text-sm text-white/70"></div>
 
           {/* utilities (LinkedIn, Resume) - nudge down slightly on mobile so they sit lower than the hamburger */}
-          <div className="flex items-center gap-2 mt-3">
+          <div className="flex items-center gap-2 mt-5">
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
               target="_blank"
@@ -218,7 +218,7 @@ export default function Nav() {
           {/* compact glassy panel in the top-left; animates translate+fade */}
           <div
             className={
-              `absolute top-4 left-4 w-[68vw] max-w-[220px] rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-2 pt-9 pb-3 px-3 transition-all duration-300 ease-out ` +
+              `absolute top-4 left-4 w-[68vw] max-w-[220px] rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-2 pt-12 pb-3 px-3 transition-all duration-300 ease-out ` +
               (open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-2 scale-95")
             }
             style={{ height: "auto" }}

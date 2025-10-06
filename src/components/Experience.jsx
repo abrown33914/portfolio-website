@@ -187,11 +187,11 @@ export default function Experience() {
             >
               <div className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-1">
                 <div className="min-w-0">
-                  <h4 className="text-white font-semibold text-base sm:text-lg mb-0.5">
+                  <h4 className="text-white font-semibold text-sm sm:text-lg mb-0.5">
                     {it.role}
                   </h4>
                   {/* allow long organization names to wrap instead of truncating */}
-                  <span className="text-neutral-400 text-sm sm:text-base mb-0.5 block whitespace-normal break-words">{it.company}</span>
+                  <span className="text-neutral-400 text-xs sm:text-sm md:text-base mb-0.5 block whitespace-normal break-words">{it.company}</span>
                 </div>
 
                 <div className="text-right">

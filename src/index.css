@@ -9,7 +9,8 @@
 	Keep these simple so tailwind utilities control most styling.
 	---------------------- */
 :root { color-scheme: dark; }
-html, body, #root { height: 100%; }
+/* Use dynamic viewport height so mobile browsers that hide the chrome don't cut off background */
+html, body, #root { height: 100%; min-height: 100dvh; }
 body { @apply bg-[#0B0B10] text-white overflow-x-hidden antialiased; }
 
 /* Ensure the page cannot be scrolled sideways anywhere */
@@ -28,6 +29,12 @@ body.cursor-none * { cursor: none !important; }
 	.backdrop-blur { backdrop-filter: none !important; }
 	/* reduce translucent glass intensity so repaints are cheaper */
 	.bg-black\/35 { background-color: rgba(0,0,0,0.6) !important; }
+}
+
+/* make canvas hints for smoother rendering */
+canvas.pointer-events-none {
+	will-change: transform, opacity; /* hint to the browser */
+	image-rendering: auto;
 }
 
 /* Reusable button utility used across the site */

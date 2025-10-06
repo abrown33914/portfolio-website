@@ -18,12 +18,15 @@ export default function StarCanvas() {
   const TW_AMP = 0.6; // twinkle amplitude
   const MAX_ALPHA = 0.74; // brightness cap
   const PARALLAX = 22; // max parallax px (stronger mouse effect)
-  const DPR_CAP = 2; // cap devicePixelRatio
+  const DPR_CAP = 3; // cap devicePixelRatio (allow higher DPR for crisper rendering)
 
   // internal state
   let stars = [];
   let running = true; // stop flag for cleanup
-  const size = { w: window.innerWidth, h: window.innerHeight };
+  // size will prefer visualViewport when available so the canvas fills the
+  // visible area (avoids top cutoffs on mobile where UI chrome overlaps).
+  const vw = window.visualViewport;
+  const size = { w: vw ? vw.width : window.innerWidth, h: vw ? vw.height : window.innerHeight };
   let dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
   const target = { x: 0, y: 0 };
   const offset = { x: 0, y: 0 }; // eased offset for smooth parallax
@@ -37,8 +40,9 @@ export default function StarCanvas() {
       dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
       canvas.style.width = size.w + "px";
       canvas.style.height = size.h + "px";
-      canvas.width = Math.floor(size.w * dpr);
-      canvas.height = Math.floor(size.h * dpr);
+  // use Math.round to avoid subtle fractional scaling artifacts
+  canvas.width = Math.round(size.w * dpr);
+  canvas.height = Math.round(size.h * dpr);
       // setTransform scales drawing operations to account for DPR
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       // update gradients whenever canvas size changes
@@ -79,7 +83,9 @@ export default function StarCanvas() {
       cancelAnimationFrame(rAF);
       rAF = requestAnimationFrame(() => {
         const oldW = size.w, oldH = size.h;
-        size.w = window.innerWidth; size.h = window.innerHeight;
+        const vw2 = window.visualViewport;
+        size.w = vw2 ? vw2.width : window.innerWidth;
+        size.h = vw2 ? vw2.height : window.innerHeight;
         setCanvas();
         // scale star positions so the field stretches nicely
         const sx = oldW ? size.w / oldW : 1;
@@ -88,6 +94,10 @@ export default function StarCanvas() {
       });
     };
     window.addEventListener("resize", onResize, { passive: true });
+    if (vw) {
+      // when visualViewport changes (keyboard, chrome hide/show), update
+      vw.addEventListener('resize', onResize, { passive: true });
+    }
 
   // pointer move: record raw pointer; tick computes eased target
     const fine = matchMedia && matchMedia("(pointer:fine)").matches;
