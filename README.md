@@ -1,12 +1,24 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Allison Brown — Portfolio Website
 
-Currently, two official plugins are available:
+Welcome! This personal portfolio shares a snapshot of my work, interests, and experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+You'll find:
 
-## Expanding the ESLint configuration
+- A short introduction and photo
+- A selection of projects with images and brief descriptions
+- Highlights of skills and experience
+- Easy ways to get in touch
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The site is designed to be clean and simple — no heavy jargon, just the essentials so visitors can quickly see what I build and how to reach me.
+
+This site is hosted through GitHub Pages at the custom domain: www.allisonbrown.dev
+
+## Connect
+
+Feel free to reach out or follow along:
+
+- GitHub: https://github.com/abrown33914
+- LinkedIn: https://www.linkedin.com/in/allison-brown27/
+- Email: abrown33914@gmail.com
+
