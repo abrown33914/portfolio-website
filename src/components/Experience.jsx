@@ -8,9 +8,9 @@ export default function Experience() {
       company: "BoomBox",
       period: "2025 — Present",
       details: [
-        " ",
-        " ",
-        " ",
+        "-Contributing to UI/UX design and interactive app prototyping for a social music discovery platform.",
+        "-Developing and refining responsive frontend components and user interfaces to enhance experience.",
+        "-Creating digital assets and marketing materials to support ongoing product outreach.",
       ],
     },
     {
