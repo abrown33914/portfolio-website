@@ -34,4 +34,12 @@ export const projects = [
     repo: "https://github.com/abrown33914/linux-dns-webserver-config",
   cover: import.meta.env.BASE_URL + "Projects/DNS/DNSThumbnail.jpg",
   },
+  {
+    // Smart infrastructure backend with Azure services
+    title: "Smart Traffic & Pavement Intelligence",
+    tagline: "Azure Digital Twins • Azure Functions • ML",
+    desc: "Cloud based traffic monitoring and pavement stress prediction using real time data and ML models.",
+    repo: "https://github.com/abrown33914/lucian-backend",
+  cover: import.meta.env.BASE_URL + "Projects/SmartTraffic/SmartTrafficThumbnail.png",
+  },
 ];
