@@ -153,9 +153,11 @@ export default function Nav() {
                   {n.label}
                   {isActive && (
                     <span
-                      className="absolute inset-x-2 -bottom-[2px] h-[2px] rounded-full"
+                      className="absolute left-1/2 -translate-x-1/2 -bottom-[2px] h-[2px] rounded-full"
                       style={{
                         background: `linear-gradient(90deg, ${theme.rose}, ${theme.violet}, ${theme.teal})`,
+                        width: 'fit-content',
+                        maxWidth: '100%'
                       }}
                     />
                   )}
@@ -218,33 +220,41 @@ export default function Nav() {
           {/* compact glassy panel in the top-left; animates translate+fade */}
           <div
             className={
-              `absolute top-4 left-4 w-[68vw] max-w-[220px] rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-2 pt-12 pb-3 px-3 transition-all duration-300 ease-out ` +
+              `absolute top-4 left-4 rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-1 pt-12 pb-3 px-2 transition-all duration-300 ease-out ` +
               (open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-2 scale-95")
             }
-            style={{ height: "auto" }}
+            style={{ height: "auto", width: "fit-content" }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* menu items start below the fixed header hamburger */}
 
-            {/* menu links (stacked) */}
-            <nav className="mt-2 grid gap-1">
-              {navItems.map((n) => (
+            {/* menu links (stacked with staggered animation) */}
+            <nav className="grid gap-0.5">
+              {navItems.map((n, idx) => (
                 <button
                   key={n.id}
                   onClick={() => { setOpen(false); setTimeout(() => scrollTo(n.id), 0); }}
-                  className="w-full text-left px-3 py-2 rounded-md text-[15px] text-white/90 transition-colors relative hover:text-[--rose]"
+                  className="text-left px-3 py-2 rounded-md text-[15px] text-white/90 transition-all relative hover:text-[--rose] whitespace-nowrap"
                   style={{
-                    color: active === n.id ? '#fff' : 'rgba(255,255,255,0.90)',
-                    ['--rose']: theme.rose
+                    color: active === n.id ? '#fff' : 'rgba(255,255,255,0.85)',
+                    ['--rose']: theme.rose,
+                    transform: open ? 'translateY(0)' : `translateY(-8px)`,
+                    opacity: open ? 1 : 0,
+                    transition: open
+                      ? `all 300ms cubic-bezier(0.34, 1.56, 0.64, 1) ${idx * 40}ms`
+                      : `all 200ms ease-in ${(navItems.length - idx - 1) * 30}ms`
                   }}
                   onMouseEnter={e => (e.currentTarget.style.color = theme.rose)}
-                  onMouseLeave={e => (e.currentTarget.style.color = active === n.id ? '#fff' : 'rgba(255,255,255,0.90)')}
+                  onMouseLeave={e => (e.currentTarget.style.color = active === n.id ? '#fff' : 'rgba(255,255,255,0.85)')}
                 >
                   <span className="relative z-10">{n.label}</span>
                   {active === n.id && (
                     <span
-                      className="absolute left-3 right-3 bottom-2 h-[2px] rounded-full"
+                      className="absolute bottom-2 h-[2px] rounded-full"
                       style={{
+                        left: '0.75rem',
+                        right: '0.75rem',
+                        width: 'fit-content',
                         background: `linear-gradient(90deg, ${theme.rose}, ${theme.violet}, ${theme.teal})`,
                       }}
                     />

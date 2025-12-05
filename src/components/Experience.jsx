@@ -8,8 +8,8 @@ export default function Experience() {
       company: "BoomBox",
       period: "Fall 2025 — Present",
       details: [
-        "-Contributing to UI/UX design and interactive app prototyping for a social music discovery platform.",
         "-Developing and refining responsive frontend components and user interfaces to enhance experience.",
+        "-Contributing to UI/UX design and interactive app prototyping for a social music discovery platform.",
         "-Creating digital assets and marketing materials to support ongoing product outreach.",
       ],
     },
@@ -127,6 +127,22 @@ export default function Experience() {
                 loading="lazy"
               />
             </motion.div>
+
+            {/* teaching image as 4th tile spanning full width */}
+            <motion.div
+              className="col-span-3 rounded-2xl overflow-hidden border border-white/12 bg-white/3"
+              initial={{ y: 14, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.36, delay: 0.08 }}
+            >
+              <img
+                src={import.meta.env.BASE_URL + 'teaching.jpg'}
+                alt="Teaching moment"
+                className="w-full h-full object-cover object-center"
+                loading="lazy"
+              />
+            </motion.div>
           </div>
 
           {/* desktop: stacked images, stretched so bottom photo aligns with cards */}
@@ -177,6 +193,22 @@ export default function Experience() {
                 src={import.meta.env.BASE_URL + 'shellhacks.jpg'}
                 alt="ShellHacks 2024 (FIU)"
                 className="w-full object-cover aspect-[4/5] lg:max-h-[380px]"
+                loading="lazy"
+              />
+            </motion.div>
+
+            {/* 4th image: teaching moment */}
+            <motion.div
+              className="rounded-2xl overflow-hidden border border-white/15 bg-white/5"
+              initial={{ y: 14, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+            >
+              <img
+                src={import.meta.env.BASE_URL + 'teaching.jpg'}
+                alt="Teaching moment"
+                className="w-full object-cover aspect-video lg:max-h-[300px]"
                 loading="lazy"
               />
             </motion.div>

@@ -154,8 +154,8 @@ export default function Projects() {
         style={{
           // side gutters (leave generous for breathing room)
           "--gutter": "clamp(56px, 8vw, 120px)",
-          // arrow offset: smaller so buttons sit just outside the carousel
-          "--arrowOffset": "clamp(20px, 4vw, 48px)",
+          // arrow offset: minimal gap between arrow and cards
+          "--arrowOffset": "2px",
           "--peek": "clamp(12px, 2vw, 28px)",
         }}
       >
@@ -180,7 +180,7 @@ export default function Projects() {
               className="hidden md:flex projects-arrow-right items-center justify-center absolute top-1/2 -translate-y-1/2 z-10
                          w-11 h-11 md:w-12 md:h-12 text-white/90 hover:text-white transition-transform hover:scale-105
                          outline-none focus:outline-none"
-              style={{ right: "calc(-1 * var(--arrowOffset))" }}
+              style={{ right: "calc(-1 * (var(--arrowOffset) + 1px))" }}
             >
               <ChevronRight size={34} strokeWidth={3} />
             </button>

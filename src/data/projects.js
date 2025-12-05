@@ -6,15 +6,15 @@ export const projects = [
     // posture detection research project (Python + MediaPipe)
     title: "iMPOSTURE",
     tagline: "Python • MediaPipe • Google ADK",
-    desc: "AI for posture and distraction detection with real-time alerts and wellness tracking.",
+    desc: "AI for posture and distraction detection with real time alerts and wellness tracking.",
     repo: "https://github.com/abrown33914/iMPOSTURE",
   cover: import.meta.env.BASE_URL + "Projects/iMPOSTURE/ImpostureThumbnail.jpg",
   },
   {
     // Smart infrastructure backend with Azure services
-    title: "Smart Traffic & Pavement Intelligence",
+    title: "Smart Traffic Backend",
     tagline: "Azure Digital Twins • Azure Functions • ML",
-    desc: "Cloud based traffic monitoring and pavement stress prediction using real time data and ML models.",
+    desc: "Cloud traffic monitoring/pavement stress prediction using live data and ML models.",
     repo: "https://github.com/abrown33914/lucian-backend",
   cover: import.meta.env.BASE_URL + "Projects/SmartTraffic/SmartTrafficThumbnail.png",
   },
