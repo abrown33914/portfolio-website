@@ -75,7 +75,20 @@ export default function Projects() {
   return (
     <Section id="projects" title="Projects">
       <div className="relative">
-        {/* Desktop arrows */}
+        {/* Scrollable track */}
+        <div
+          ref={trackRef}
+          className="overflow-x-auto no-scrollbar scroll-smooth px-4 md:px-16"
+          style={{ scrollSnapType: "x mandatory" }}
+        >
+          <div className="flex gap-4">
+            {(projects ?? []).map((p) => (
+              <ProjectCard key={p.title} {...p} cardWidth={cardWidth} />
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop arrows - positioned outside track with padding */}
         {isOverflowing && (
           <>
             <button
@@ -95,20 +108,7 @@ export default function Projects() {
           </>
         )}
 
-        {/* Scrollable track */}
-        <div
-          ref={trackRef}
-          className="overflow-x-auto no-scrollbar scroll-smooth"
-          style={{ scrollSnapType: "x mandatory" }}
-        >
-          <div className="flex gap-4 px-4">
-            {(projects ?? []).map((p) => (
-              <ProjectCard key={p.title} {...p} cardWidth={cardWidth} />
-            ))}
-          </div>
-        </div>
-
-        {/* Mobile arrows */}
+        {/* Mobile arrows - underneath track */}
         {isOverflowing && (
           <div className="md:hidden flex items-center justify-center gap-6 mt-8">
             <button
