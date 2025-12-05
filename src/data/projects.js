@@ -11,6 +11,14 @@ export const projects = [
   cover: import.meta.env.BASE_URL + "Projects/iMPOSTURE/ImpostureThumbnail.jpg",
   },
   {
+    // Smart infrastructure backend with Azure services
+    title: "Smart Traffic & Pavement Intelligence",
+    tagline: "Azure Digital Twins • Azure Functions • ML",
+    desc: "Cloud based traffic monitoring and pavement stress prediction using real time data and ML models.",
+    repo: "https://github.com/abrown33914/lucian-backend",
+  cover: import.meta.env.BASE_URL + "Projects/SmartTraffic/SmartTrafficThumbnail.png",
+  },
+  {
     // mobile app with mapping and AI features
     title: "Neo Eden",
     tagline: "React Native • Google Maps • Gemini",
@@ -33,13 +41,5 @@ export const projects = [
     desc: "Deployed a secure web server with custom domain and DNS zones.",
     repo: "https://github.com/abrown33914/linux-dns-webserver-config",
   cover: import.meta.env.BASE_URL + "Projects/DNS/DNSThumbnail.jpg",
-  },
-  {
-    // Smart infrastructure backend with Azure services
-    title: "Smart Traffic & Pavement Intelligence",
-    tagline: "Azure Digital Twins • Azure Functions • ML",
-    desc: "Cloud based traffic monitoring and pavement stress prediction using real time data and ML models.",
-    repo: "https://github.com/abrown33914/lucian-backend",
-  cover: import.meta.env.BASE_URL + "Projects/SmartTraffic/SmartTrafficThumbnail.png",
   },
 ];

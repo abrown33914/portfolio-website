@@ -4,13 +4,23 @@ import { motion } from "framer-motion";
 export default function Experience() {
   const items = [
     {
-      role: "Frontend Developer Intern",
+      role: "Frontend Developer",
       company: "BoomBox",
-      period: "2025 — Present",
+      period: "Fall 2025 — Present",
       details: [
         "-Contributing to UI/UX design and interactive app prototyping for a social music discovery platform.",
         "-Developing and refining responsive frontend components and user interfaces to enhance experience.",
         "-Creating digital assets and marketing materials to support ongoing product outreach.",
+      ],
+    },
+    {
+      role: "President",
+      company: "FGCU Computer Science & Software Engineering Club (CSSEC)",
+      period: "Spring 2024 - Present",
+      details: [
+        "-Advanced from Marketing Coordinator to President, leading weekly meetings and officer led workshops.",
+        "-Organize panels and career events with professionals from Microsoft, Hertz, and Arthrex.",
+        "-Building a collaborative, growth focused community through mentorship, projects, and technical workshops.",
       ],
     },
     {
@@ -24,13 +34,12 @@ export default function Experience() {
       ],
     },
     {
-      role: "Vice President",
-      company: "FGCU Computer Science & Software Engineering Club (CSSEC)",
-      period: "Spring 2024 - Present",
+      role: "Research Assistant – Irony Annotation",
+      company: "FGCU x University of Turin, Italy",
+      period: "Fall 2025",
       details: [
-        "-Advanced from Marketing Coordinator to Vice President, leading weekly meetings and officer led workshops.",
-        "-Organized panels and career events with professionals from Microsoft, Hertz, and Arthrex.",
-        "-Built a collaborative, growth-focused community through mentorship and projects.",
+        "-Annotating text with rhetorical and irony related features to support training of an LLM for irony detection.",
+        "-Applying formal linguistic guidelines to label irony activators and improve model interpretability.",
       ],
     },
     {
