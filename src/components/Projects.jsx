@@ -74,7 +74,29 @@ export default function Projects() {
 
   return (
     <Section id="projects" title="Projects">
-      <div className="relative">
+      <div className="relative overflow-visible">
+        {/* Desktop arrows - positioned outside track with padding */}
+        {isOverflowing && (
+          <>
+            <button
+              aria-label="Previous"
+              onClick={() => nudge(-1)}
+              className="hidden md:flex absolute top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center text-white/90 hover:text-white transition-transform hover:scale-105"
+              style={{ left: "0px" }}
+            >
+              <ChevronLeft size={32} strokeWidth={3} />
+            </button>
+            <button
+              aria-label="Next"
+              onClick={() => nudge(1)}
+              className="hidden md:flex absolute top-1/2 -translate-y-1/2 z-10 w-12 h-12 items-center justify-center text-white/90 hover:text-white transition-transform hover:scale-105"
+              style={{ right: "0px" }}
+            >
+              <ChevronRight size={32} strokeWidth={3} />
+            </button>
+          </>
+        )}
+
         {/* Scrollable track */}
         <div
           ref={trackRef}
@@ -87,26 +109,6 @@ export default function Projects() {
             ))}
           </div>
         </div>
-
-        {/* Desktop arrows - positioned outside track with padding */}
-        {isOverflowing && (
-          <>
-            <button
-              aria-label="Previous"
-              onClick={() => nudge(-1)}
-              className="hidden md:flex absolute top-1/2 -translate-y-1/2 left-0 z-10 w-12 h-12 items-center justify-center text-white/90 hover:text-white transition-transform hover:scale-105"
-            >
-              <ChevronLeft size={32} strokeWidth={3} />
-            </button>
-            <button
-              aria-label="Next"
-              onClick={() => nudge(1)}
-              className="hidden md:flex absolute top-1/2 -translate-y-1/2 right-0 z-10 w-12 h-12 items-center justify-center text-white/90 hover:text-white transition-transform hover:scale-105"
-            >
-              <ChevronRight size={32} strokeWidth={3} />
-            </button>
-          </>
-        )}
 
         {/* Mobile arrows - underneath track */}
         {isOverflowing && (

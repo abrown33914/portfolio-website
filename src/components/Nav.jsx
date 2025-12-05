@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import { navItems, theme } from "../theme";
 
 // Nav component
@@ -75,17 +76,14 @@ export default function Nav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((s) => !s)}
-            className="inline-flex items-center justify-center w-20 h-20 text-white/90 hover:text-white transition-transform duration-150 hover:scale-110 bg-transparent border-none shadow-none"
+            className="inline-flex items-center justify-center w-10 h-10 text-white/90 hover:text-white transition-transform duration-150 hover:scale-110 bg-transparent border-none shadow-none"
             style={{ zIndex: 160 }}
           >
-            <Hamburger size={32} />
+            <Hamburger size={28} />
           </button>
 
-          {/* spacer */}
-          <div className="px-2 text-sm text-white/70"></div>
-
-          {/* utilities (LinkedIn, Resume) - nudge down slightly on mobile so they sit lower than the hamburger */}
-          <div className="flex items-center gap-2 mt-5">
+          {/* utilities (LinkedIn, Resume) */}
+          <div className="flex items-center gap-2">
             <a
               href="https://www.linkedin.com/in/allison-brown27/"
               target="_blank"
@@ -210,8 +208,8 @@ export default function Nav() {
         // overlay fades; pointer-events disabled while hidden
         <div
           className={
-            `md:hidden fixed inset-0 z-[120] backdrop-blur-[1px] transition-opacity duration-200 ease-out ` +
-            (open ? "opacity-100" : "opacity-0 pointer-events-none")
+            `md:hidden fixed inset-0 z-[120] transition-opacity duration-200 ease-out ` +
+            (open ? "opacity-100 backdrop-blur-sm" : "opacity-0 pointer-events-none")
           }
           onClick={() => setOpen(false)}
           role="dialog"
@@ -220,8 +218,8 @@ export default function Nav() {
           {/* compact glassy panel in the top-left; animates translate+fade */}
           <div
             className={
-              `absolute top-4 left-4 rounded-2xl border border-white/15 bg-black/60 backdrop-blur shadow-xl flex flex-col items-start gap-1 pt-12 pb-3 px-2 transition-all duration-300 ease-out ` +
-              (open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-2 scale-95")
+              `absolute top-4 left-4 rounded-2xl border border-white/15 bg-black/70 backdrop-blur-lg shadow-xl flex flex-col items-start gap-0 pt-12 pb-3 px-2 transition-all duration-300 ease-out ` +
+              (open ? "opacity-100 translate-y-0 scale-100" : "opacity-0 -translate-y-4 scale-95 pointer-events-none")
             }
             style={{ height: "auto", width: "fit-content" }}
             onClick={(e) => e.stopPropagation()}
@@ -229,19 +227,18 @@ export default function Nav() {
             {/* menu items start below the fixed header hamburger */}
 
             {/* menu links (stacked with staggered animation) */}
-            <nav className="grid gap-0.5">
+            <nav className="grid gap-0">
               {navItems.map((n, idx) => (
                 <button
                   key={n.id}
                   onClick={() => { setOpen(false); setTimeout(() => scrollTo(n.id), 0); }}
-                  className="text-left px-3 py-2 rounded-md text-[15px] text-white/90 transition-all relative hover:text-[--rose] whitespace-nowrap"
+                  className="text-left px-3 py-2.5 rounded-md text-[15px] text-white/90 transition-all relative hover:text-white whitespace-nowrap"
                   style={{
                     color: active === n.id ? '#fff' : 'rgba(255,255,255,0.85)',
-                    ['--rose']: theme.rose,
-                    transform: open ? 'translateY(0)' : `translateY(-8px)`,
+                    transform: open ? 'translateY(0)' : `translateY(-10px)`,
                     opacity: open ? 1 : 0,
                     transition: open
-                      ? `all 300ms cubic-bezier(0.34, 1.56, 0.64, 1) ${idx * 40}ms`
+                      ? `all 300ms cubic-bezier(0.34, 1.56, 0.64, 1) ${idx * 45}ms`
                       : `all 200ms ease-in ${(navItems.length - idx - 1) * 30}ms`
                   }}
                   onMouseEnter={e => (e.currentTarget.style.color = theme.rose)}
@@ -249,14 +246,14 @@ export default function Nav() {
                 >
                   <span className="relative z-10">{n.label}</span>
                   {active === n.id && (
-                    <span
-                      className="absolute bottom-2 h-[2px] rounded-full"
+                    <motion.span
+                      layoutId="mobile-underline"
+                      className="absolute bottom-2 left-3 h-[2px] rounded-full"
                       style={{
-                        left: '0.75rem',
-                        right: '0.75rem',
-                        width: 'fit-content',
+                        width: 'calc(100% - 1.5rem)',
                         background: `linear-gradient(90deg, ${theme.rose}, ${theme.violet}, ${theme.teal})`,
                       }}
+                      transition={{ duration: 0.3 }}
                     />
                   )}
                 </button>
